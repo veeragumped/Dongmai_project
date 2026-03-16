@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gongdong/style/app_style.dart';
+import 'package:gongdong/widgets/challengetypewidget.dart';
 
 class Challengetype extends StatelessWidget {
   const Challengetype({super.key});
@@ -12,25 +13,24 @@ class Challengetype extends StatelessWidget {
         foregroundColor: Appcolors.creamywhiteColor,
       ),
       backgroundColor: Appcolors.jetblackColor,
-      body: Column(
+      body: ListView(
         children: [
-          Center(
-            child: Text(
-              'เลือก Challenge ที่ต้องการ',
-              style: TextStyle(
-                color: Appcolors.creamywhiteColor,
-                fontSize: 40,
-                fontFamily: 'print',
+          Column(
+            children: [
+              Center(
+                child: Text(
+                  'เลือก Challenge ที่ต้องการ',
+                  style: TextStyle(
+                    color: Appcolors.creamywhiteColor,
+                    fontSize: 40,
+                    fontFamily: 'print',
+                  ),
+                ),
               ),
-            ),
-          ),
-          Text(
-            'Challenge',
-            style: TextStyle(
-              color: Appcolors.creamywhiteColor,
-              fontSize: 20,
-              fontFamily: 'print',
-            ),
+              Challengetypewidget(title: 'Challenge', text: 'ปี'),
+              Challengetypewidget(title: 'Challenge', text: 'เดือน'),
+              CreateChallengeWidget(),
+            ],
           ),
         ],
       ),

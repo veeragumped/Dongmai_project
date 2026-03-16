@@ -12,6 +12,7 @@ class BookService {
     final url = Uri.parse(
       'https://www.googleapis.com/books/v1/volumes?q=$query&printType=books&langRestrict=th&orderBy=newest&key=$apiKey',
     );
+    print('เช็ก URL ที่ส่งไป: $url');
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
