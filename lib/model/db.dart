@@ -294,14 +294,8 @@ class DBHelper {
     return await dbClient.query('challenge');
   }
 
-  Future<void> insertChallenge() async {
+  Future<void> insertChallenge(Map<String, dynamic> data) async {
     final dbClient = await db;
-    await dbClient.insert('challenge', {
-      'title': 'นักอ่านมือใหม่',
-      'description': 'อ่านหนังสือให้ครบ',
-      'goal_count': 3,
-      'current_count': 0,
-      'reward_points': 50,
-    });
+    await dbClient.insert('challenge', data);
   }
 }

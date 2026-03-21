@@ -16,7 +16,10 @@ class Account extends StatefulWidget {
 }
 
 class _AccountState extends State<Account> {
+  List<Map<String, dynamic>> getChallenge = [];
+
   final DBHelper dbHelper = DBHelper();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -108,6 +111,8 @@ class _AccountState extends State<Account> {
                           return Center(child: Text(''));
                         }
                         return ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
                           scrollDirection: Axis.horizontal,
                           itemCount: snapshot.data!.length,
                           itemBuilder: (context, index) {
@@ -144,9 +149,10 @@ class _AccountState extends State<Account> {
           FutureBuilder<List<Map<String, dynamic>>>(
             future: dbHelper.getChallenge(),
             builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting)
+              if (snapshot.connectionState == ConnectionState.waiting) {
                 return Center(child: CircularProgressIndicator());
-              if (!snapshot.hasData || snapshot.data!.isEmpty)
+              }
+              if (!snapshot.hasData || snapshot.data!.isEmpty) {
                 return Center(
                   child: Padding(
                     padding: const EdgeInsets.only(top: 50, bottom: 30),
@@ -160,10 +166,15 @@ class _AccountState extends State<Account> {
                     ),
                   ),
                 );
-
+              }
+              final challenge = snapshot.data!;
               return Column(
-                children: snapshot.data!.map((item) {
-                  return Challengewidget(title: item['title']);
+                children: challenge.map((item) {
+                  return Challengewidget(
+                    title: item['title'] ?? 'ไม่มีชื่อ',
+                    currentCount: item['current_count'] ?? 0,
+                    goalCount: item['goal_count'] ?? 0,
+                  );
                 }).toList(),
               );
             },
@@ -173,9 +184,7 @@ class _AccountState extends State<Account> {
             children: [
               TextButton(
                 onPressed: () async {
-                  //await dbHelper.insertChallenge();
-                  //setState(() {});
-                  Navigator.push(
+                  await Navigator.push(
                     context,
                     MaterialPageRoute(
                       builder: (context) {
@@ -183,6 +192,7 @@ class _AccountState extends State<Account> {
                       },
                     ),
                   );
+                  setState(() {});
                 },
                 style: TextButton.styleFrom(
                   backgroundColor: Appcolors.copperColor,
