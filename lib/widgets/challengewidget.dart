@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:gongdong/navbar/NavigationBar/account/edit_challege.dart';
 
 class Challengewidget extends StatelessWidget {
+  final int id;
   final String title;
   final int currentCount;
   final int goalCount;
 
   const Challengewidget({
     super.key,
+    required this.id,
     required this.title,
     required this.currentCount,
     required this.goalCount,
@@ -56,7 +59,21 @@ class Challengewidget extends StatelessWidget {
                 mainAxisSize: MainAxisSize.min,
                 children: [
                   GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            return EditChallege(
+                              id: id,
+                              currentTitle: title,
+                              currentCount: currentCount,
+                              goalCount: goalCount,
+                            );
+                          },
+                        ),
+                      );
+                    },
                     child: Icon(
                       Icons.mode_edit_outline_outlined,
                       color: Colors.white.withValues(alpha: 0.9),

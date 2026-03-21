@@ -171,6 +171,7 @@ class _AccountState extends State<Account> {
               return Column(
                 children: challenge.map((item) {
                   return Challengewidget(
+                    id: item['id'],
                     title: item['title'] ?? 'ไม่มีชื่อ',
                     currentCount: item['current_count'] ?? 0,
                     goalCount: item['goal_count'] ?? 0,

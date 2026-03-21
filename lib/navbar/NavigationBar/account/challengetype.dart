@@ -151,6 +151,7 @@ class _ChallengetypeState extends State<Challengetype> {
 
   void showAlert(BuildContext context, String title) {
     final TextEditingController controller = TextEditingController();
+    final TextEditingController titleController = TextEditingController();
 
     showDialog(
       context: context,
@@ -177,7 +178,7 @@ class _ChallengetypeState extends State<Challengetype> {
                 ),
                 SizedBox(height: 10),
                 TextField(
-                  controller: controller,
+                  controller: titleController,
                   keyboardType: TextInputType.text,
                   textAlign: TextAlign.start,
                   decoration: InputDecoration(
@@ -224,11 +225,33 @@ class _ChallengetypeState extends State<Challengetype> {
                     alertButton(context, 'ยกเลิก', Appcolors.copperColor, () {
                       Navigator.pop(context);
                     }),
-                    alertButton(context, 'ตกลง', Appcolors.copperColor, () {
-                      String goal = controller.text;
-                      debugPrint('ตั้งเป้าหมาย $title ไว้ที่ $goal เล่ม');
-                      Navigator.pop(context);
-                    }),
+                    alertButton(
+                      context,
+                      'ตกลง',
+                      Appcolors.copperColor,
+                      () async {
+                        String title = titleController.text.trim();
+                        String goalText = controller.text;
+                        int goal = int.tryParse(goalText) ?? 0;
+                        if (title.isNotEmpty && goal > 0) {
+                          await dbHelper.insertChallenge({
+                            'title': title,
+                            'goal_count': goal,
+                            'current_count': 0,
+                          });
+                          if (context.mounted) {
+                            Navigator.of(
+                              context,
+                            ).popUntil((route) => route.isFirst);
+                          }
+                          setState(() {});
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('กรุณากรอกชื่อและจำนวน')),
+                          );
+                        }
+                      },
+                    ),
                   ],
                 ),
               ],
